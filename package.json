@@ -25,5 +25,8 @@
   "homepage": "https://github.com/wlsf82/cypress-basico-v2#readme",
   "dependencies": {
     "cypress": "^13.7.3"
+  },
+  "devDependencies": {
+    "mochawesome": "^7.1.3"
   }
 }
