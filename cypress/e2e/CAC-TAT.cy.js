@@ -134,6 +134,41 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     cy.contains('Talking About Testing').should('be.visible')
   })
  
+  it('exibe e esconde as mensagens de sucesso e erro usando o .invoke', () => {
+    cy.get('.success')  // pega elemento da classe success 
+      .should('not.be.visible') // verifica se não está visivel
+      .invoke('show') // vai exibir o elemento que está escondido
+      .should('be.visible') // e vai verificar se está visivel
+      .and('contain', 'Mensagem enviada com sucesso.') // a propiedade and, é usada para: (e conter a mensagem enviada com sucesso)
+      .invoke('hide') // invoca o hide para esconder
+      .should('not.be.visible') // e verificar se não está visivel
+    cy.get('.error')
+      .should('not.be.visible')
+      .invoke('show')
+      .should('be.visible')
+      .and('contain', 'Valide os campos obrigatórios!')
+      .invoke('hide')
+      .should('not.be.visible')
+  })
 
+  it('faz uma requisição HTTP', function() {
+    cy.request('https://cac-tat.s3.eu-central-1.amazonaws.com/index.html') // cy.request faz requisições a nível de rede // requisção tipo get para essa url
+      .should(function(response){ // o should recebe uma função de callback, que recebe a resposta da requisição
+        const { status, statusText, body} = response // com a resposta, a gente desestruturar um objeto em js // status, text e body
+        expect(status).to.equal(200) // faz a verificação 
+        expect(statusText).to.equal('OK') // faz a verificação 
+        expect(body).to.include('CAC TAT') // 
+      }) 
+  })
+
+  it('encontre o gato escondido', function() {
+    cy.get('#cat')
+      .invoke('show')
+      .should('be.visible')
+    cy.get('#title')
+      .invoke('text', 'CAC TAT')
+    cy.get('#subtitle')
+      .invoke('text', 'Eu 💚 Gatos')
+  })
   
 })
